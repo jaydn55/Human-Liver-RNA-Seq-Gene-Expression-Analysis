@@ -19,13 +19,12 @@ The primary goals of this analysis were:
 The raw dataset, sourced from [**(https://www.refine.bio/experiments/GSE61260/human-liver-gene-expression-data-from-subjects-of-varying-ages)**], contained both RNA-Seq expression data and clinical metadata. We performed the following key preprocessing steps:
 * Combined RNA expression data with a carefully selected subset of metadata to form the final training dataset.
 * **Feature Scaling:** Applied a `StandardScaler` to normalise the data, which is essential for models like SVM and helps improve the convergence and performance of all classifiers.
-* **Addressing Class Imbalance:** Employed the **SMOTE (Synthetic Minority Over-sampling Technique)** component within our pipeline to handle class imbalances, preventing the models from becoming biased towards the majority class.
+* **Addressing Class Imbalance:** Combined classes nash and nafld to combat class imbalances, preventing the models from becoming biased towards the majority class.
 
 ### Machine Learning Pipeline
 
 Our workflow was built around a robust machine learning pipeline to ensure consistency and prevent data leakage. The pipeline integrated the preprocessing steps with the chosen classifiers. For each model, the pipeline included:
 * `StandardScaler` for data normalisation.
-* `SMOTE` for balancing the training data.
 * The selected classifier (SVM, XGBoost, or Random Forest).
 
 ### Model Evaluation
@@ -38,9 +37,19 @@ Each trained model was evaluated on a held-out test set using three key metrics 
     * For **Random Forest and XGBoost**, we used the built-in `feature_importances_` attribute.
     * For the **Support Vector Machine**, we utilised the permutation importance method to rank features, as SVMs do not have a native feature importance attribute.
 
+### Visualisation
+
+The interactive volcano plot allows for exploration of individual genes. Hover over data points to see specific gene names, their log2FC, and p-values.
+
+![Volcano Plot of Differential Gene Expression](data/volcano_plot.png)
+
+*An example of the generated volcano plot, highlighting upregulated, downregulated, and non-significant genes.*
+
 ## Repository Contents
 
 * `notebooks/`: Jupyter notebooks detailing the data exploration, preprocessing, model training, and evaluation steps.
 * `data/`: Raw and processed data files.
 * `README.md`: This file.
 * `requirements.txt`: A list of all necessary Python libraries to run the project.
+
+
